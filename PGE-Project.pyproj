@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{66cf2a73-41cd-4366-8373-836643ef1ef7}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="a1\a1Enums.py" />
+    <Compile Include="a1\a1Time.py" />
+    <Compile Include="a1\GameObject.py" />
+    <Compile Include="a1\JukeBox.py" />
+    <Compile Include="a1\Lerp_Laundmo.py" />
+    <Compile Include="a1\Scene.py" />
+    <Compile Include="a1\SceneManager.py" />
+    <Compile Include="a1\ScreenSize.py" />
+    <Compile Include="a1\SpriteTools.py" />
+    <Compile Include="a1\TransitionManager.py" />
+    <Compile Include="gameinfo.py" />
+    <Compile Include="main.py" />
+    <Compile Include="Scenes\DebugScene.py" />
+    <Compile Include="Scenes\EmptyScene.py" />
+    <Compile Include="Scenes\MainScene.py" />
+    <Compile Include="setup.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="a1" />
+    <Folder Include="img" />
+    <Folder Include="Scenes" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
