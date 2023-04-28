@@ -2,6 +2,7 @@ from a1.SpriteTools import SpriteTools
 from a1.a1Enums import Alignment
 from a1.Lerp_Laundmo import Lerp
 from a1.a1Time import a1Time
+import pygame
 
 class GameObject():
     
@@ -93,6 +94,12 @@ class GameObject():
         self.scale = newscale
         #print("scale: {} newscale: {}".format(self, newscale))
         
+    def pointIsColliding(self, point):
+        if self.spriteobject == None:
+            return False
+        if self.spriteobject.sprite.rect.collidepoint(point):
+            return True
+        return False
 
     def update(self):
         pass
