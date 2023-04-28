@@ -28,3 +28,6 @@ A starting project for PyGame which includes:
 - [x] Easy Text Creation
 - [x] Easy Sprite Creation
 - [x] Simplified adjusting of size, opacity, color, etc. done within GameObjects
+
+
+The project also uses asyncio to run. This should cause no issues or interferences with your work. However, should you want to create a webbuild or .exe build, this allows you to easily do so.
