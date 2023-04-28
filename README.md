@@ -27,4 +27,4 @@ A starting project for PyGame which includes:
 #### • Sprite Tools
 - [x] Easy Text Creation
 - [x] Easy Sprite Creation
-- [x] Simplified adjusting of size, opacity, color, etc. done inside GameObjects
+- [x] Simplified adjusting of size, opacity, color, etc. done within GameObjects
