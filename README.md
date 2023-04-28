@@ -1,38 +1,30 @@
+
 # PyGame Engine
 A starting project for PyGame which includes:
 
 
-• GameObjects
-
-• • Automatic Alignment (You choose the pivot, default is center)
-
-• • Collision W.I.P.
+#### • GameObjects
+- [x] Automatic Alignment (You choose the pivot, default is center)
+- [x] Collision W.I.P.
 
 
-• Scene Management
-
-• • Scene Layers
-
-• • Independent, Optionally Animated Scene Transitions
+#### • Scene Management
+- [x] Scene Layers
+- [x] Independent, Optionally Animated Scene Transitions
 
 
-• Time
-
-• • DeltaTime
-
-• • FPS Debugging
+#### • Time
+- [x] DeltaTime
+- [x] FPS Debugging
 
 
-• Lerp (Credit to @laundmo on github)
+#### • Lerp (Credit to @laundmo on github)
 
 
-• Simplified game information file (Easy start-up configuration)
+#### • Simplified game information file (Easy start-up configuration)
 
 
-• Sprite Tools
-
-• • Easy Text Creation
-
-• • Easy Sprite Creation
-
-• • Simplified adjusting of size, opacity, color, etc. done inside GameObjects
+#### • Sprite Tools
+- [x] Easy Text Creation
+- [x] Easy Sprite Creation
+- [x] Simplified adjusting of size, opacity, color, etc. done inside GameObjects
