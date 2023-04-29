@@ -135,7 +135,6 @@ class SpriteTools():
         textobject.color = newColor
         surf = SpriteTools._renderFontToSurface(textobject.color, textobject.message)
         textobject.surf = surf
-        textobject.surf_origin = surf
 
     @staticmethod
     def _renderFontToSurface(color, message):
