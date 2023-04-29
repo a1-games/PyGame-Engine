@@ -26,17 +26,12 @@ class MainScene(Scene):
         self.playButton.addText(SpriteTools.getTextRect(("Start Game"), (255, 255, 255)))
         # Change the empty scene to your own scene
         self.playButton.onClick = lambda : self.changeScene(EmptyScene())
+        self.playButton.onPointerEnter = lambda : self.playButton.setTextColor((255, 255, 0))
+        self.playButton.onPointerExit = lambda : self.playButton.setTextColor((255, 255, 255))
+
 
         
-    def update(self):
-        super().update()
-        # We also use mousepos in events so we set it here as to not call the get() multiple times per frame
-        self.mouse_pos = pygame.mouse.get_pos()
 
-        if self.playButton.pointIsColliding(self.mouse_pos):
-            self.playButton.setTextColor((255, 255, 0))
-        else:
-            self.playButton.setTextColor((255, 255, 255))
     
         
                 

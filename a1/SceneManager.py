@@ -136,7 +136,7 @@ class SceneManager():
                     # only handle events if the scene is active (dont read key presses during transitions)
                     if not TransitionManager.transitioning:
                         SceneManager.activeScenes[sceneName].handleEvents(events)
-                    SceneManager.activeScenes[sceneName].update()
+                    SceneManager.activeScenes[sceneName].update(pygame.mouse.get_pos())
                     SceneManager.activeScenes[sceneName].draw(screen)
             
             SceneManager.sceneCleanUp()
