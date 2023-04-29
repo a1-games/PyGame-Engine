@@ -58,6 +58,8 @@ class GameObject():
         self.textobject = None
         self.oldText = ""
         self.textMessage = ""
+        self.textColor = (0, 0, 0)
+        self.oldTextColor = (0, 0, 0)
 
         # online stuff
         self.lerpFloat = 0.0
@@ -89,16 +91,20 @@ class GameObject():
         else:
             self.position = pos
 
+    def setTextColor(self, color):
+        self.textColor = color
 
     def setScale(self, newscale):
         self.scale = newscale
         #print("scale: {} newscale: {}".format(self, newscale))
         
     def pointIsColliding(self, point):
-        if self.spriteobject == None:
-            return False
-        if self.spriteobject.sprite.rect.collidepoint(point):
-            return True
+        if self.spriteobject != None:
+            if self.spriteobject.sprite.rect.collidepoint(point):
+                return True
+        if self.textobject != None:
+            if self.textobject.rect.collidepoint(point):
+                return True
         return False
 
     def update(self):
@@ -134,6 +140,9 @@ class GameObject():
                 SpriteTools.setTextScale(self.textobject, self.oldScale)
             # set pos after setting scale in case the scale moves the origin by a tiny amount
             SpriteTools.setTextPos(self.textobject, self.position, scene, self.alignment)
+            # set color
+            if self.textColor != self.oldTextColor:
+                SpriteTools.setTextColor(self.textobject, self.textColor)
             # Opacity has to be last because changing the scale overrides the surface so
             # it overrides Opacity if Opacity gets set first
             if self.oldOpacity != self.opacity:
