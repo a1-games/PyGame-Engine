@@ -109,6 +109,7 @@ class GameObject():
     def update(self):
         pass
 
+
     def draw(self, screen, scene):
         
         if (self.spriteobject is not None):
@@ -154,6 +155,12 @@ class GameObject():
             # Debug hitbox:
             if self.showCollider == True:
                 pygame.draw.rect(screen, self.debugColor, self.textobject.rect, 3)
+
+
+    def onDestroy(self):
+        pass
+
+
 
 
     
