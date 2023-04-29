@@ -61,12 +61,11 @@ class GameObject():
         self.textColor = (0, 0, 0)
         self.oldTextColor = (0, 0, 0)
 
-        # online stuff
-        self.lerpFloat = 0.0
-        self.lerping = False
-        self.frompos = (0, 0)
-        self.targetpos = (0, 0)
+        # debugging
+        self.showCollider = False
+        self.debugColor = (255, 0, 0)
     
+
     def addSprite(self, spriteobject):
         self.spriteobject = spriteobject
         self.oldScale = -1
@@ -125,7 +124,9 @@ class GameObject():
             SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.alignment)
 
             screen.blit(self.spriteobject.sprite.image, self.spriteobject.sprite.rect)
-            #pygame.draw.rect(screen, (0, 0, 255), self.spriteobject.sprite.rect, 4)
+            # Debug hitbox:
+            if self.showCollider == True:
+                pygame.draw.rect(screen, self.debugColor, self.spriteobject.sprite.rect, 4)
 
 
         if (self.textobject is not None):
@@ -150,7 +151,9 @@ class GameObject():
                 SpriteTools.setTextOpacity(self.textobject, self.oldOpacity, scene)
             # this is a debug thing, keep to remember how!!
             screen.blit(self.textobject.surf, self.textobject.rect)
-            #pygame.draw.rect(screen, (5, 255, 255), self.textobject.rect, 3)
+            # Debug hitbox:
+            if self.showCollider == True:
+                pygame.draw.rect(screen, self.debugColor, self.textobject.rect, 3)
 
 
     

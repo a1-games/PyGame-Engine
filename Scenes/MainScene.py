@@ -19,6 +19,7 @@ class MainScene(Scene):
         self.addGameObject(self.playButton)
         self.playButton.addText(SpriteTools.getTextRect(("Start Game"), (255, 255, 255)))
 
+
         
     def update(self):
         super().update()
