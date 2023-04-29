@@ -31,6 +31,7 @@
     <Compile Include="a1\TransitionManager.py" />
     <Compile Include="gameinfo.py" />
     <Compile Include="main.py" />
+    <Compile Include="Scenes\BackgroundScene.py" />
     <Compile Include="Scenes\DebugScene.py" />
     <Compile Include="Scenes\EmptyScene.py" />
     <Compile Include="Scenes\MainScene.py" />

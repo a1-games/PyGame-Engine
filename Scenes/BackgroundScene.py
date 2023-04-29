@@ -11,7 +11,7 @@ class BackgroundScene(Scene):
         
         backgroundImage = GameObject(ScreenSize.Center(), "background", Alignment.Center)
         self.addGameObject(backgroundImage)
-        backgroundImage.addSprite(SpriteTools.getSprite("img/background_ingame.png"))
+        backgroundImage.addSprite(SpriteTools.getSprite("img/test.png"))
 
         
 
