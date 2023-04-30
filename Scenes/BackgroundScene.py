@@ -9,14 +9,16 @@ class BackgroundScene(Scene):
     def InitScene(self):
         super().InitScene()
         
-        backgroundImage = GameObject(ScreenSize.Center(), "background", Alignment.Center)
+        backgroundImage = GameObject((200, 200), "background", Alignment.Center)
         self.addGameObject(backgroundImage)
-        backgroundImage.addSprite(SpriteTools.getSprite("img/test.png"))
-
+        backgroundImage.addSprite(SpriteTools.getSprite("img/testbanner.png"))
         
+        backgroundImage2 = GameObject((600, 200), "background", Alignment.Center)
+        self.addGameObject(backgroundImage2)
+        backgroundImage2.addSprite(SpriteTools.getSprite("img/testbanner.png"))
 
-
-
-
+    def draw(self, screen):
+        screen.fill((0, 0, 0))
+        super().draw(screen)
 
 

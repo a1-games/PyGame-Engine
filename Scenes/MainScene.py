@@ -1,4 +1,5 @@
 import pygame
+import math
 from a1.GameObject import GameObject
 from a1.SpriteTools import SpriteTools
 from a1.Scene import Scene
@@ -23,18 +24,20 @@ class MainScene(Scene):
 
         self.playButton = Button(ScreenSize.Center(), self, print("test"))
         self.addGameObject(self.playButton)
+        #self.playButton.addSprite(SpriteTools.getSprite(("img/testbanner.png"), self))
         self.playButton.addText(SpriteTools.getTextRect(("Start Game"), (255, 255, 255)))
         # Change the empty scene to your own scene
         self.playButton.onClick = lambda : self.changeScene(EmptyScene())
         self.playButton.onPointerEnter = lambda : self.playButton.setTextColor((255, 255, 0))
         self.playButton.onPointerExit = lambda : self.playButton.setTextColor((255, 255, 255))
 
+        #self.playButton.showCollider = True
 
-        
 
-    
-        
-                
+    def update(self, mousepos):
+        super().update(mousepos)
+
+        #self.playButton.setRotation(self.playButton.rotation + 0.1)
 
 
 

@@ -42,12 +42,25 @@ class SpriteTools():
     _fontsize = 48
 
     @staticmethod
-    def setSpritePos(spriteobject, pos, scene, alignment : Alignment):
+    def setSpriteScale(spriteobject, scale):
+        spriteobject.sprite.image = pygame.transform.smoothscale_by(spriteobject.img, scale)
+        size = spriteobject.sprite.image.get_size()
+        spriteobject.sprite.rect.width = size[0]
+        spriteobject.sprite.rect.height = size[1]
+        
+    @staticmethod
+    def setSpritePos(spriteobject, pos, scene, alignment : Alignment, scale : float = 1, rotation : float = -1):
         w_x = spriteobject.sprite.rect.width
         w_y = spriteobject.sprite.rect.height
 
         posX = scene.position[0] + pos[0]
         posY = scene.position[1] + pos[1]
+
+        if rotation != -1:
+            surf = pygame.transform.smoothscale_by(spriteobject.img, scale)
+            rotsurf = pygame.transform.rotate(surf, rotation)
+            spriteobject.sprite.image = rotsurf
+            spriteobject.sprite.rect = rotsurf.get_rect()
 
         if alignment == Alignment.TopLeft:
             spriteobject.sprite.rect.x = posX
@@ -66,12 +79,6 @@ class SpriteTools():
             #spriteobject.sprite.rect.x = posX - w_x / 2
             #spriteobject.sprite.rect.y = posY - w_y / 2
 
-    @staticmethod
-    def setSpriteScale(spriteobject, scale):
-        spriteobject.sprite.image = pygame.transform.smoothscale_by(spriteobject.img, scale)
-        size = spriteobject.sprite.image.get_size()
-        spriteobject.sprite.rect.width = size[0]
-        spriteobject.sprite.rect.height = size[1]
 
     @staticmethod
     def setSpriteOpacity(spriteobject, opacity, scene):
@@ -87,7 +94,7 @@ class SpriteTools():
     def getSprite(imagename, scene = None):
 
         path = resource_path(imagename)
-        img = pygame.image.load(path)
+        img = pygame.image.load(path).convert_alpha()
         sprite = pygame.sprite.Sprite()
         sprite.rect = img.get_rect()
         sprite.image = img
@@ -101,12 +108,18 @@ class SpriteTools():
     
 
     @staticmethod
-    def setTextPos(textobject : TextObject, pos, scene, alignment : Alignment):
+    def setTextPos(textobject : TextObject, pos, scene, alignment : Alignment, scale: float = 1, rotation : float = 0):
         w_x = textobject.rect.width
         w_y = textobject.rect.height
         
         posX = scene.position[0] + pos[0]
         posY = scene.position[1] + pos[1]
+
+        if rotation != 0:
+            surf = pygame.transform.smoothscale_by(textobject.surf_origin, scale)
+            rotsurf = pygame.transform.rotate(surf, rotation)
+            textobject.surf = rotsurf
+            textobject.rect = rotsurf.get_rect()
 
         if alignment == Alignment.TopLeft:
             textobject.rect.x = posX
@@ -123,6 +136,7 @@ class SpriteTools():
         else: # if alignment is center
             textobject.rect.center = (posX, posY)
         
+        
     @staticmethod
     def setTextMessage(textobject : TextObject, newMessage : str):
         textobject.message = newMessage
@@ -135,6 +149,7 @@ class SpriteTools():
         textobject.color = newColor
         surf = SpriteTools._renderFontToSurface(textobject.color, textobject.message)
         textobject.surf = surf
+        textobject.surf_origin = surf
 
     @staticmethod
     def _renderFontToSurface(color, message):

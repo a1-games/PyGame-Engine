@@ -25,6 +25,7 @@ def main():
 
     initGameInfo()
     
+    screen = pygame.display.set_mode(ScreenSize.Size())
 
     # Add all the layers you need to be able to switch out here:
     # If you need to switch a layer in between others later on, you need to define the layer with an empty scene, as so:
@@ -39,7 +40,6 @@ def main():
 
     # This starts the while loop that runs the game
     # We use asyncio so that it is easy to convert to a webgame / exe build if you need to.
-    screen = pygame.display.set_mode(ScreenSize.Size())
     asyncio.run( SceneManager.Run(screen) )
 
     pygame.quit()

@@ -46,20 +46,29 @@ class GameObject():
 
 
     def __init__(self, startpos, name = "noname", alignment = Alignment.Center):
-        self.position = startpos
         self.name = name
         self.alignment = alignment
-
-        self.oldScale = 1.0
-        self.scale = 1.0
-        self.oldOpacity = 1.0
-        self.opacity = 1.0
+        
         self.spriteobject = None
         self.textobject = None
-        self.oldText = ""
+        # position
+        self.oldPosition = None
+        self.position = startpos
+        # scale
+        self.oldScale = None
+        self.scale = 1.0
+        # opacity
+        self.oldOpacity = None
+        self.opacity = 1.0
+        # text message
+        self.oldText = None
         self.textMessage = ""
+        # text color
+        self.oldTextColor = None
         self.textColor = (0, 0, 0)
-        self.oldTextColor = (0, 0, 0)
+        # rotation
+        self.oldRotation = None
+        self.rotation = 0
 
         # debugging
         self.showCollider = False
@@ -79,7 +88,11 @@ class GameObject():
         
     def addText(self, newTextObj):
         self.textobject = newTextObj
+        self.setTextColor(newTextObj.color)
         self.updateText(newTextObj.message)
+
+    def setTextColor(self, color):
+        self.textColor = color
         
     def setPosition(self, pos, lerped : bool = False):
         if (lerped):
@@ -90,12 +103,12 @@ class GameObject():
         else:
             self.position = pos
 
-    def setTextColor(self, color):
-        self.textColor = color
-
     def setScale(self, newscale):
         self.scale = newscale
         #print("scale: {} newscale: {}".format(self, newscale))
+
+    def setRotation(self, degrees):
+        self.rotation = degrees
         
     def pointIsColliding(self, point):
         if self.spriteobject != None:
@@ -112,17 +125,16 @@ class GameObject():
 
     def draw(self, screen, scene):
         
-        if (self.spriteobject is not None):
-
-            if self.oldOpacity != self.opacity:
-                self.oldOpacity = self.opacity
-                SpriteTools.setSpriteOpacity(self.spriteobject, self.oldOpacity, scene)
+        if self.spriteobject != None:
 
             if self.oldScale != self.scale:
-                self.oldScale = self.scale
-                SpriteTools.setSpriteScale(self.spriteobject, self.oldScale)
+                SpriteTools.setSpriteScale(self.spriteobject, self.scale)
 
-            SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.alignment)
+            if self.oldPosition != self.position or self.oldRotation != self.rotation:
+                SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.alignment, self.scale, self.rotation)
+
+            if self.oldOpacity != self.opacity:
+                SpriteTools.setSpriteOpacity(self.spriteobject, self.opacity, scene)
 
             screen.blit(self.spriteobject.sprite.image, self.spriteobject.sprite.rect)
             # Debug hitbox:
@@ -130,32 +142,42 @@ class GameObject():
                 pygame.draw.rect(screen, self.debugColor, self.spriteobject.sprite.rect, 4)
 
 
-        if (self.textobject is not None):
+        if self.textobject != None:
             # set message first so we can manipulate it after
             if self.oldText != self.textMessage:
-                self.oldText = self.textMessage
-                SpriteTools.setTextMessage(self.textobject, self.oldText)
-                SpriteTools.setTextScale(self.textobject, self.oldScale)
-            # set scale if we didnt already do so above ^
-            if self.oldScale != self.scale:
-                self.oldScale = self.scale
-                SpriteTools.setTextScale(self.textobject, self.oldScale)
-            # set pos after setting scale in case the scale moves the origin by a tiny amount
-            SpriteTools.setTextPos(self.textobject, self.position, scene, self.alignment)
+                SpriteTools.setTextMessage(self.textobject, self.textMessage)
+                SpriteTools.setTextScale(self.textobject, self.scale)
+
             # set color
-            if self.textColor != self.oldTextColor:
+            if self.oldTextColor != self.textColor:
                 SpriteTools.setTextColor(self.textobject, self.textColor)
+                # Setting color resets rotation so we unfortunately need to trigger rotation set
+                self.oldRotation = None
+
+            # set scale 
+            if self.oldScale != self.scale:
+                SpriteTools.setTextScale(self.textobject, self.scale)
+
+            # set position and/or rotation
+            if self.oldPosition != self.position or self.oldRotation != self.rotation:
+                SpriteTools.setTextPos(self.textobject, self.position, scene, self.alignment, self.scale, self.rotation)
+            
             # Opacity has to be last because changing the scale overrides the surface so
             # it overrides Opacity if Opacity gets set first
             if self.oldOpacity != self.opacity:
-                self.oldOpacity = self.opacity
-                SpriteTools.setTextOpacity(self.textobject, self.oldOpacity, scene)
-            # this is a debug thing, keep to remember how!!
+                SpriteTools.setTextOpacity(self.textobject, self.opacity, scene)
+                
             screen.blit(self.textobject.surf, self.textobject.rect)
             # Debug hitbox:
             if self.showCollider == True:
-                pygame.draw.rect(screen, self.debugColor, self.textobject.rect, 3)
+                pygame.draw.rect(screen, (self.debugColor[0]*0.5, self.debugColor[1]*0.5, self.debugColor[2]*0.5), self.textobject.rect, 2)
 
+        self.oldPosition = self.position
+        self.oldRotation = self.rotation
+        self.oldScale = self.scale
+        self.oldOpacity = self.opacity
+        self.oldText = self.textMessage
+        self.oldTextColor = self.textColor
 
     def onDestroy(self):
         pass
