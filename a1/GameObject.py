@@ -1,6 +1,6 @@
 from a1.SpriteTools import SpriteTools
 from a1.a1Enums import Alignment, SpriteDirection
-from a1.Lerp_Laundmo import Lerp
+from a1.Lerp import Lerp
 from a1.a1Time import a1Time
 from a1.ScreenSize import ScreenSize
 import pygame
@@ -71,7 +71,7 @@ class GameObject():
         self.textColor = (0, 0, 0)
         # rotation
         self.oldRotation = None
-        self.rotation = 0
+        self.rotation = -1
 
         # debugging
         self.showCollider = False
@@ -81,6 +81,12 @@ class GameObject():
     def addSprite(self, spriteobject):
         self.spriteobject = spriteobject
         self.oldScale = -1
+
+    def replaceSpriteImg(self, newImg):
+        self.spriteobject.replaceImg(newImg)
+        self.oldPosition = None
+        self.oldScale = None
+        self.oldOpacity = None
 
     def setOpacity(self, newopacity):
         self.opacity = newopacity
@@ -187,8 +193,7 @@ class GameObject():
             if self.oldPosition != self.position or self.oldRotation != self.rotation:
                 SpriteTools.setTextPos(self.textobject, self.position, scene, self.alignment, self.scale, self.rotation)
             
-            # Opacity has to be last because changing the scale overrides the surface so
-            # it overrides Opacity if Opacity gets set first
+            # set opacity
             if self.oldOpacity != self.opacity:
                 SpriteTools.setTextOpacity(self.textobject, self.opacity, scene)
                 

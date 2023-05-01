@@ -16,3 +16,11 @@ class SceneTransition(enum.Enum):
     Slide_B2T = 4,
     CrossFade = 5,
 
+    
+class SpriteDirection(enum.Enum):
+    _None = 0,
+    North = 1,
+    East = 2,
+    South = 3,
+    West = 4,
+

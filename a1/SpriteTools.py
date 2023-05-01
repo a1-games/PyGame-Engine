@@ -35,6 +35,9 @@ class SpriteObject():
     def __init__(self, sprite, img):
         self.sprite = sprite
         self.img = img
+    
+    def replaceImg(self, newImg):
+        self.img = newImg
 
 
 class SpriteTools():
@@ -42,14 +45,14 @@ class SpriteTools():
     _fontsize = 48
 
     @staticmethod
-    def setSpriteScale(spriteobject, scale):
+    def setSpriteScale(spriteobject : SpriteObject, scale):
         spriteobject.sprite.image = pygame.transform.smoothscale_by(spriteobject.img, scale)
         size = spriteobject.sprite.image.get_size()
         spriteobject.sprite.rect.width = size[0]
         spriteobject.sprite.rect.height = size[1]
         
     @staticmethod
-    def setSpritePos(spriteobject, pos, scene, alignment : Alignment, scale : float = 1, rotation : float = -1):
+    def setSpritePos(spriteobject : SpriteObject, pos, scene, alignment : Alignment, scale : float = 1, rotation : float = -1):
         w_x = spriteobject.sprite.rect.width
         w_y = spriteobject.sprite.rect.height
 
@@ -57,8 +60,10 @@ class SpriteTools():
         posY = scene.position[1] + pos[1]
 
         if rotation != -1:
-            surf = pygame.transform.smoothscale_by(spriteobject.img, scale)
-            rotsurf = pygame.transform.rotate(surf, rotation)
+            # get the original image with the correct scale, as surface
+            #surf = pygame.transform.smoothscale_by(spriteobject.img, scale)
+            # rotate the surface
+            rotsurf = pygame.transform.rotate(spriteobject.img, rotation)
             spriteobject.sprite.image = rotsurf
             spriteobject.sprite.rect = rotsurf.get_rect()
 
@@ -85,9 +90,10 @@ class SpriteTools():
         alpha = opacity * scene.opacity * 255
         if alpha > 255:
             alpha = 255
-        spriteobject.img.set_alpha(alpha)
+        #spriteobject.img.set_alpha(alpha)
+        spriteobject.sprite.image.set_alpha(alpha)
         #print("setting opacity to {}".format(opacity))
-        spriteobject.sprite.image = spriteobject.img
+        #spriteobject.sprite.image = spriteobject.img
         #print(spriterect[1].get_alpha())
 
     @staticmethod
@@ -100,9 +106,6 @@ class SpriteTools():
         sprite.image = img
 
         spriteobject = SpriteObject(sprite, img)
-
-        #pos = (0, 0)
-        #SpriteTools.setSpritePos(spriteobject, pos, scene)
 
         return spriteobject
     

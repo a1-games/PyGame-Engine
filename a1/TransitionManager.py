@@ -132,8 +132,8 @@ class TransitionManager():
                     TransitionManager._endTransition(rpo, SceneManager)
                     continue
             
-            SceneManager.activeScenes[rpo.tmpname].position = toDist
-            SceneManager.activeScenes[rpo.nametoreplace].position = fromDist
+            SceneManager.activeScenes[rpo.tmpname].setPosition(toDist)
+            SceneManager.activeScenes[rpo.nametoreplace].setPosition(fromDist)
         
 
 

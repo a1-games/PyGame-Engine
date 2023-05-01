@@ -15,7 +15,7 @@ class DebugScene(Scene):
         self.fpscounter.addText(self.frameRateText)
         self.fpscounter.setScale(0.4)
 
-    def update(self, mousepos):
-        super().update(mousepos)
+    def update(self):
+        super().update()
         self.fpscounter.updateText("fps: {}".format(a1Time.Fps))
 

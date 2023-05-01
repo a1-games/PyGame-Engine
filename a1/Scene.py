@@ -2,16 +2,24 @@ import abc
 import time
 import pygame
 from a1.GameObject import GameObject
+from a1.MousePos import MousePos
 
 class Scene(metaclass=abc.ABCMeta):
     _initiated = False
     _active = True
-    mousepos = (0, 0)
 
 
     def disable(self):
         self._active = False
 
+
+    def setPosition(self, pos):
+        if self._initiated == False:
+            print("ERROR: Setting scene position before scene was initiated!")
+            return
+        self.position = pos
+        for gameobject in self.gameobjects:
+            gameobject.oldPosition = None            
 
     def setOpacity(self, opacity):
         if self._initiated == False:
@@ -19,7 +27,7 @@ class Scene(metaclass=abc.ABCMeta):
             return
         self.opacity = opacity
         for gameobject in self.gameobjects:
-            gameobject.setOpacity(opacity)
+            gameobject.oldOpacity = None
 
     def addGameObject(self, gameobject : GameObject):
         self.gameobjects.append(gameobject)
@@ -40,21 +48,20 @@ class Scene(metaclass=abc.ABCMeta):
             #print("is drawing a spriterect in spriterects")
             gameobject.draw(screen, self)
 
-    def update(self, mousepos):
-        self.mousepos = mousepos
+    def update(self):
 
         #print("is drawing")
         for gameobject in self.gameobjects:
             #print("is drawing a spriterect in spriterects")
             gameobject.update()
 
-        self.checkHovering(self.mousepos)
+        self.checkHovering()
 
     
-    def checkHovering(self, mousepos):
+    def checkHovering(self):
         for button in self.buttons:
             if button.onPointerEnter != None and button.onPointerExit != None:
-                button.checkContainsPointer(mousepos)
+                button.checkContainsPointer(MousePos())
             
 
     def handleEvents(self, events):
@@ -64,7 +71,7 @@ class Scene(metaclass=abc.ABCMeta):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for button in self.buttons:
                     # If we clicked the collider of playButton
-                    if button.pointIsColliding(self.mousepos):
+                    if button.pointIsColliding(MousePos()):
                         button.onClick()
 
     def InitScene(self):

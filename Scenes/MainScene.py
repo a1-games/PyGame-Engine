@@ -16,6 +16,7 @@ class MainScene(Scene):
     mousepos = (0, 0)
 
     def changeScene(self, scene : Scene):
+        print("test")
         SceneManager.replaceScene("MainLayer", scene, SceneTransition.CrossFade)
 
 
@@ -34,10 +35,6 @@ class MainScene(Scene):
         #self.playButton.showCollider = True
 
 
-    def update(self, mousepos):
-        super().update(mousepos)
-
-        #self.playButton.setRotation(self.playButton.rotation + 0.1)
 
 
 
