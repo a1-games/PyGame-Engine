@@ -1,8 +1,11 @@
 from a1.SpriteTools import SpriteTools
-from a1.a1Enums import Alignment
+from a1.a1Enums import Alignment, SpriteDirection
 from a1.Lerp_Laundmo import Lerp
 from a1.a1Time import a1Time
+from a1.ScreenSize import ScreenSize
 import pygame
+import math
+from a1.a1Math import Normalize
 
 class GameObject():
     
@@ -122,6 +125,28 @@ class GameObject():
     def update(self):
         pass
 
+    def moveTowards(self, targetpos, pixelsToMove):
+        mypos = self.position
+        lookVector = (targetpos[0] - mypos[0], targetpos[1] - mypos[1])
+        normalizedVec = Normalize(lookVector)
+
+        newX = mypos[0] + normalizedVec[0] * pixelsToMove * a1Time.DeltaTime
+        newY = mypos[1] + normalizedVec[1] * pixelsToMove * a1Time.DeltaTime
+
+        self.position = (newX, newY)
+
+    def lookAt(self, targetpos, imgdir : SpriteDirection = SpriteDirection.North):
+        mypos = self.position
+        lookVector = (targetpos[0] - mypos[0], -(targetpos[1] - mypos[1]))
+        
+        zRadians = math.atan2(lookVector[1], lookVector[0])
+        zRot = (zRadians / math.pi) * 180
+
+        imgdir_val = imgdir.value[0]
+        direction_compensation = 90 * imgdir_val
+        zRot -= direction_compensation
+
+        self.setRotation(zRot)
 
     def draw(self, screen, scene):
         
