@@ -16,9 +16,9 @@ class Button(GameObject):
         scene.addButton(self)
 
     
-    def onDestroy(self):
-        super().onDestroy()
-        Scene.removeButton(self)
+    def onDestroy(self, scene):
+        scene.removeButton(self)
+        super().onDestroy(scene)
  
     def checkContainsPointer(self, mousepos):
         # If we did not contain the cursor last frame:

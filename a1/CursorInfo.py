@@ -1,20 +1,20 @@
 from a1.GameObject import GameObject
 from a1.a1Enums import Alignment
 from a1.MousePos import MousePos
-from a1.SpriteTools import SpriteTools
+from a1.SpriteTools import SpriteTools, TextObject
 from a1.Scene import Scene
 
 class CursorInfo():
 
     _active = False
-    cursorInfoTextObject = None
+    cursorInfoGameObject = None
 
-    def setCursorInfoTextObject(cito):
-        CursorInfo.cursorInfoTextObject = cito
+    def setCursorInfoGameObject(cito : GameObject):
+        CursorInfo.cursorInfoGameObject = cito
 
     @staticmethod
-    def setInfoText(info):
-        CursorInfo.cursorInfoTextObject.updateText(info)
+    def setInfoText(info : str):
+        CursorInfo.cursorInfoGameObject.updateText(info)
         CursorInfo._active = True
 
     @staticmethod
@@ -26,12 +26,12 @@ class CursorInfoScene(Scene):
 
     def InitScene(self):
         super().InitScene()
-        infoObject = GameObject((0, 0), "CursorInfoTextObject", Alignment.BottomLeft)
+        infoObject = GameObject((0, 0), "cursorInfoGameObject", Alignment.BottomLeft)
         infoObject.addText(SpriteTools.getTextRect("Info", (255, 255, 0)))
         infoObject.setScale(0.4)
         self.addGameObject(infoObject)
 
-        CursorInfo.setCursorInfoTextObject(infoObject)
+        CursorInfo.setCursorInfoGameObject(infoObject)
         CursorInfo._active = False
 
 
@@ -46,5 +46,5 @@ class CursorInfoScene(Scene):
             return
         super().update()
         
-        CursorInfo.cursorInfoTextObject.setPosition(MousePos())
+        CursorInfo.cursorInfoGameObject.setPosition(MousePos())
 

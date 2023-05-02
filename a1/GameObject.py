@@ -209,7 +209,7 @@ class GameObject():
         self.oldText = self.textMessage
         self.oldTextColor = self.textColor
 
-    def onDestroy(self):
+    def onDestroy(self, scene):
         pass
 
 

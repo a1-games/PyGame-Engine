@@ -40,8 +40,15 @@ class Scene(metaclass=abc.ABCMeta):
         self.buttons.remove(button)
 
     def destroyGameObject(self, gameobject : GameObject):
-        gameobject.onDestroy()
+        gameobject.onDestroy(self)
         self.gameobjects.remove(gameobject)
+
+    def destroyGameObject(self, gameobjectname : str):
+        for gameobject in self.gameobjects:
+            if gameobject.name == gameobjectname:
+                gameobject.onDestroy(self)
+                self.gameobjects.remove(gameobject)
+        
 
     def draw(self, screen):
         #print("is drawing")
