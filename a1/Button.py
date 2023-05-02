@@ -1,20 +1,20 @@
 from a1.GameObject import GameObject
 from a1.a1Enums import Alignment
 from a1.Scene import Scene
+from a1.a1Events import a1Event
 
 
 
 class Button(GameObject):
 
-    containsPointer = False
-
-    def __init__(self, startpos, scene : Scene, onclick = None, name="noname", alignment=Alignment.Center):
+    def __init__(self, startpos, scene : Scene, name="noname", alignment=Alignment.Center):
         super().__init__(startpos, name, alignment)
+        self.onClick = a1Event()
+        self.onPointerEnter = a1Event()
+        self.onPointerExit = a1Event()
+        self.containsPointer = False
         scene.addButton(self)
 
-        self.onClick = onclick
-        self.onPointerEnter = None
-        self.onPointerExit = None
     
     def onDestroy(self):
         super().onDestroy()
@@ -26,7 +26,7 @@ class Button(GameObject):
             # If we contain the cursor this frame:
             if self.pointIsColliding(mousepos):
                 self.containsPointer = True
-                self.onPointerEnter()
+                self.onPointerEnter.invoke()
                 #print("entered")
                 return
         # If we did contain the cursor last frame:
@@ -37,7 +37,7 @@ class Button(GameObject):
             # If we no longer contain the cursor:
             else:
                 self.containsPointer = False
-                self.onPointerExit()
+                self.onPointerExit.invoke()
                 #print("exited")
 
 

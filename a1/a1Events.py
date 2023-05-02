@@ -1,7 +1,8 @@
 
 class a1Event:
 
-    actions = []
+    def __init__(self):
+        self.actions = []
 
     def addListener(self, action):
         self.actions.append(action)
@@ -10,5 +11,9 @@ class a1Event:
         for action in self.actions:
             action()
 
+    def isEmpty(self):
+        if len(self.actions) == 0:
+            return True
+        return False
 
         

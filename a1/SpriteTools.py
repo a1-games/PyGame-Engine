@@ -61,9 +61,9 @@ class SpriteTools():
 
         if rotation != -1:
             # get the original image with the correct scale, as surface
-            #surf = pygame.transform.smoothscale_by(spriteobject.img, scale)
+            surf = pygame.transform.smoothscale_by(spriteobject.img, scale)
             # rotate the surface
-            rotsurf = pygame.transform.rotate(spriteobject.img, rotation)
+            rotsurf = pygame.transform.rotate(surf, rotation)
             spriteobject.sprite.image = rotsurf
             spriteobject.sprite.rect = rotsurf.get_rect()
 
@@ -111,18 +111,21 @@ class SpriteTools():
     
 
     @staticmethod
-    def setTextPos(textobject : TextObject, pos, scene, alignment : Alignment, scale: float = 1, rotation : float = 0):
+    def setTextPos(textobject : TextObject, pos, scene, alignment : Alignment, scale: float = 1, rotation : float = -1):
         w_x = textobject.rect.width
         w_y = textobject.rect.height
         
         posX = scene.position[0] + pos[0]
         posY = scene.position[1] + pos[1]
 
-        if rotation != 0:
+        if rotation != -1:
+            # get the original image with the correct scale, as surface
             surf = pygame.transform.smoothscale_by(textobject.surf_origin, scale)
+            # rotate the surface
             rotsurf = pygame.transform.rotate(surf, rotation)
             textobject.surf = rotsurf
             textobject.rect = rotsurf.get_rect()
+            print("text rot is ", rotation)
 
         if alignment == Alignment.TopLeft:
             textobject.rect.x = posX

@@ -7,6 +7,7 @@ from a1.MousePos import MousePos
 class Scene(metaclass=abc.ABCMeta):
     _initiated = False
     _active = True
+    mousepos = (0, 0)
 
 
     def disable(self):
@@ -60,7 +61,7 @@ class Scene(metaclass=abc.ABCMeta):
     
     def checkHovering(self):
         for button in self.buttons:
-            if button.onPointerEnter != None and button.onPointerExit != None:
+            if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
                 button.checkContainsPointer(MousePos())
             
 
@@ -72,7 +73,7 @@ class Scene(metaclass=abc.ABCMeta):
                 for button in self.buttons:
                     # If we clicked the collider of playButton
                     if button.pointIsColliding(MousePos()):
-                        button.onClick()
+                        button.onClick.invoke()
 
     def InitScene(self):
         self._initiated = True
