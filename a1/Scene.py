@@ -7,6 +7,7 @@ from a1.MousePos import MousePos
 class Scene(metaclass=abc.ABCMeta):
     _initiated = False
     _active = True
+    _handleEvents = True
     mousepos = (0, 0)
 
 
@@ -43,7 +44,7 @@ class Scene(metaclass=abc.ABCMeta):
         gameobject.onDestroy(self)
         self.gameobjects.remove(gameobject)
 
-    def destroyGameObject(self, gameobjectname : str):
+    def destroyGameObjectByName(self, gameobjectname : str):
         for gameobject in self.gameobjects:
             if gameobject.name == gameobjectname:
                 gameobject.onDestroy(self)
@@ -63,7 +64,8 @@ class Scene(metaclass=abc.ABCMeta):
             #print("is drawing a spriterect in spriterects")
             gameobject.update()
 
-        self.checkHovering()
+        if self._handleEvents:
+            self.checkHovering()
 
     
     def checkHovering(self):
@@ -73,14 +75,15 @@ class Scene(metaclass=abc.ABCMeta):
             
 
     def handleEvents(self, events):
-        # handle events
-        for event in events:
-            # This defines a mouseclick listener
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for button in self.buttons:
-                    # If we clicked the collider of playButton
-                    if button.pointIsColliding(MousePos()):
-                        button.onClick.invoke()
+        if self._handleEvents:
+            # handle events
+            for event in events:
+                # This defines a mouseclick listener
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for button in self.buttons:
+                        # If we clicked the collider of playButton
+                        if button.pointIsColliding(MousePos()):
+                            button.onClick.invoke()
 
     def InitScene(self):
         self._initiated = True

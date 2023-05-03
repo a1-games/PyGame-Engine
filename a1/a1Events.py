@@ -7,9 +7,13 @@ class a1Event:
     def addListener(self, action):
         self.actions.append(action)
 
-    def invoke(self):
-        for action in self.actions:
-            action()
+    def invoke(self, *args):
+        if args:
+            for action in self.actions:
+                action(args)
+        else:
+            for action in self.actions:
+                action()
 
     def isEmpty(self):
         if len(self.actions) == 0:
