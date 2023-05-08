@@ -21,3 +21,13 @@ def Normalize(Vector2):
     return (normX, normY)
 
 
+@staticmethod
+def VectorDistance(vec1, vec2):
+
+    # use pythagoras to finx the length of the hypotenuse
+    x2 = math.pow(vec1[0] - vec2[0], 2)
+    y2 = math.pow(vec1[1] - vec2[1], 2)
+    pythag =  math.sqrt(x2 + y2)
+    
+    # by calculating the vector before the magnitude, we ensure that the magnitude is never < 0
+    return math.sqrt(x2 + y2)
