@@ -1,5 +1,12 @@
 import math
 
+
+@staticmethod
+def pythag(a, b):
+    a2 = math.pow(a, 2)
+    b2 = math.pow(b, 2)
+    return math.sqrt(a2 + b2)
+
 @staticmethod
 def Normalize(Vector2):
     #if Vector2[0] > -1 and Vector2[0] < 1 or Vector2[1] > -1 and Vector2[1] < 1:

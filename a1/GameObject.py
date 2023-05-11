@@ -8,6 +8,14 @@ import math
 from a1.a1Math import Normalize
 
 class GameObject():
+
+    _paused = False
+    @staticmethod
+    def PauseGameObjects():
+        GameObject._paused = True
+    @staticmethod
+    def UnpauseGameObjects():
+        GameObject._paused = False
     
     def height(self):
         if self.spriteobject != None and self.textobject != None:

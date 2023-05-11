@@ -20,17 +20,10 @@ class Button(GameObject):
         scene.removeButton(self)
         super().onDestroy(scene)
  
-    def checkContainsPointer(self, mousepos):
-        # If we did not contain the cursor last frame:
-        if self.containsPointer == False:
-            # If we contain the cursor this frame:
-            if self.pointIsColliding(mousepos):
-                self.containsPointer = True
-                self.onPointerEnter.invoke()
-                #print("entered")
-                return
+
+    def checkPointerExit(self, mousepos):
         # If we did contain the cursor last frame:
-        else:
+        if self.containsPointer:
             # If we still contain the cursor:
             if self.pointIsColliding(mousepos):
                 return
@@ -39,6 +32,16 @@ class Button(GameObject):
                 self.containsPointer = False
                 self.onPointerExit.invoke()
                 #print("exited")
+
+    def checkPointerEnter(self, mousepos):
+        # If we did not contain the cursor last frame:
+        if self.containsPointer == False:
+            # If we contain the cursor this frame:
+            if self.pointIsColliding(mousepos):
+                self.containsPointer = True
+                self.onPointerEnter.invoke()
+                #print("entered")
+                return
 
 
 

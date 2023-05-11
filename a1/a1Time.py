@@ -3,6 +3,8 @@ import time
 
 class a1Time():
     
+    _paused = False
+
     _startTime = 0.0
     _lastFrame = 0.0
     _frameCount = 0.0
@@ -13,6 +15,13 @@ class a1Time():
     DeltaTime = 0.0
     NowTime = 0.0
 
+    @staticmethod
+    def PauseDelta():
+        a1Time._paused = True
+
+    @staticmethod
+    def UnpauseDelta():
+        a1Time._paused = False
 
     @staticmethod
     def ManualInit():
@@ -29,6 +38,8 @@ class a1Time():
         # deltaTime
         a1Time.DeltaTime = a1Time.NowTime - a1Time._lastFrame
         a1Time._lastFrame = a1Time.NowTime
+        if a1Time._paused:
+            a1Time.DeltaTime = 0
 
         # fps counter
         a1Time._frameCount += 1

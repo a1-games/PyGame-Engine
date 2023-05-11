@@ -5,11 +5,6 @@ from a1.GameObject import GameObject
 from a1.MousePos import MousePos
 
 class Scene(metaclass=abc.ABCMeta):
-    _initiated = False
-    _active = True
-    _handleEvents = True
-    mousepos = (0, 0)
-
 
     def disable(self):
         self._active = False
@@ -60,9 +55,10 @@ class Scene(metaclass=abc.ABCMeta):
     def update(self):
 
         #print("is drawing")
-        for gameobject in self.gameobjects:
-            #print("is drawing a spriterect in spriterects")
-            gameobject.update()
+        if not GameObject._paused:
+            for gameobject in self.gameobjects:
+                #print("is drawing a spriterect in spriterects")
+                gameobject.update()
 
         if self._handleEvents:
             self.checkHovering()
@@ -71,7 +67,10 @@ class Scene(metaclass=abc.ABCMeta):
     def checkHovering(self):
         for button in self.buttons:
             if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
-                button.checkContainsPointer(MousePos())
+                button.checkPointerExit(MousePos())
+        for button in self.buttons:
+            if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
+                button.checkPointerEnter(MousePos())
             
 
     def handleEvents(self, events):
@@ -87,6 +86,9 @@ class Scene(metaclass=abc.ABCMeta):
 
     def InitScene(self):
         self._initiated = True
+        self._active = True
+        self._handleEvents = True
+        self.mousepos = (0, 0)
         self.start = time.time()
         self.position = (0, 0)
         self.opacity = 1.0
