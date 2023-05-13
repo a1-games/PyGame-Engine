@@ -65,7 +65,7 @@ class GameObject():
         else:
             self.active = True
 
-    def __init__(self, startpos, name = "noname", alignment = Alignment.Center):
+    def __init__(self, startpos : tuple = (0, 0), name = "noname", alignment = Alignment.Center):
         self.name = name
         self.alignment = alignment
         self.active = True
