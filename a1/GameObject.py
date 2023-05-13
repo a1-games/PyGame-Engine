@@ -56,9 +56,19 @@ class GameObject():
             return 0.0
 
 
+    def setActive(self, bool : bool):
+        self.active = bool
+
+    def toggleActive(self):
+        if self.active:
+            self.active = False
+        else:
+            self.active = True
+
     def __init__(self, startpos, name = "noname", alignment = Alignment.Center):
         self.name = name
         self.alignment = alignment
+        self.active = True
         
         self.spriteobject = None
         self.textobject = None

@@ -50,7 +50,8 @@ class Scene(metaclass=abc.ABCMeta):
         #print("is drawing")
         for gameobject in self.gameobjects:
             #print("is drawing a spriterect in spriterects")
-            gameobject.draw(screen, self)
+            if gameobject.active:
+                gameobject.draw(screen, self)
 
     def update(self):
 
@@ -58,7 +59,8 @@ class Scene(metaclass=abc.ABCMeta):
         if not GameObject._paused:
             for gameobject in self.gameobjects:
                 #print("is drawing a spriterect in spriterects")
-                gameobject.update()
+                if gameobject.active:
+                    gameobject.update()
 
         if self._handleEvents:
             self.checkHovering()
@@ -66,11 +68,13 @@ class Scene(metaclass=abc.ABCMeta):
     
     def checkHovering(self):
         for button in self.buttons:
-            if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
-                button.checkPointerExit(MousePos())
+            if button.active:
+                if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
+                    button.checkPointerExit(MousePos())
         for button in self.buttons:
-            if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
-                button.checkPointerEnter(MousePos())
+            if button.active:
+                if not button.onPointerEnter.isEmpty() and not button.onPointerExit.isEmpty():
+                    button.checkPointerEnter(MousePos())
             
 
     def handleEvents(self, events):
@@ -81,8 +85,9 @@ class Scene(metaclass=abc.ABCMeta):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for button in self.buttons:
                         # If we clicked the collider of playButton
-                        if button.pointIsColliding(MousePos()):
-                            button.onClick.invoke()
+                        if button.active:
+                            if button.pointIsColliding(MousePos()):
+                                button.onClick.invoke()
 
     def InitScene(self):
         self._initiated = True
