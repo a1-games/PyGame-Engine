@@ -1,24 +1,18 @@
 from a1.GameObject import GameObject
 from a1.a1Enums import Alignment
-from a1.Scene import Scene
 from a1.a1Events import a1Event
 
 
 
 class Button(GameObject):
 
-    def __init__(self, startpos, scene : Scene, name="noname", alignment=Alignment.Center):
+    def __init__(self, startpos, scene, name="noname", alignment=Alignment.Center):
         super().__init__(startpos, name, alignment)
         self.onClick = a1Event()
         self.onPointerEnter = a1Event()
         self.onPointerExit = a1Event()
         self.containsPointer = False
         scene.addButton(self)
-
-    
-    def onDestroy(self, scene):
-        scene.removeButton(self)
-        super().onDestroy(scene)
  
 
     def checkPointerExit(self, mousepos):

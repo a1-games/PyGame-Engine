@@ -2,6 +2,7 @@ import abc
 import time
 import pygame
 from a1.GameObject import GameObject
+from a1.Button import Button
 from a1.MousePos import MousePos
 
 class Scene(metaclass=abc.ABCMeta):
@@ -32,19 +33,21 @@ class Scene(metaclass=abc.ABCMeta):
     def addButton(self, button):
         self.buttons.append(button)
 
-    def removeButton(self, button):
+    def destroyButton(self, button : Button):
         self.buttons.remove(button)
+        self.destroyGameObject(button)
 
     def destroyGameObject(self, gameobject : GameObject):
         gameobject.onDestroy(self)
         self.gameobjects.remove(gameobject)
+        del gameobject
 
     def destroyGameObjectByName(self, gameobjectname : str):
         for gameobject in self.gameobjects:
             if gameobject.name == gameobjectname:
                 gameobject.onDestroy(self)
                 self.gameobjects.remove(gameobject)
-        
+                del gameobject
 
     def draw(self, screen):
         #print("is drawing")
