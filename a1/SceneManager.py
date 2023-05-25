@@ -2,6 +2,7 @@ import queue
 import asyncio
 import pygame
 from a1.a1Time import a1Time
+from a1.a1Debug import a1Debug
 from a1.a1Enums import SceneTransition
 from a1.Scene import Scene
 from a1.TransitionManager import TransitionManager
@@ -30,7 +31,7 @@ class SceneManager():
             TransitionManager.startTransition(SceneManager, layernameToReplace, scene, transition)
         else:
             SceneManager.addScene(scene, layernameToReplace)
-            print("Tried to replace scene with nonexisting layername. Added the scene instead.")
+            a1Debug.Log("Tried to replace scene with nonexisting layername. Added the scene instead.")
 
             
     @staticmethod
@@ -39,7 +40,7 @@ class SceneManager():
             replacement = SceneManager.replacingQueue.get()
             if SceneManager.activeScenes.__contains__(replacement[1]):
                 SceneManager.activeScenes[replacement[0]] = SceneManager.activeScenes[replacement[1]]
-                print("Replaced scene: {} with scene: {}".format(SceneManager.activeScenes[replacement[0]], SceneManager.activeScenes[replacement[1]]))
+                a1Debug.Log("Replaced scene: {} with scene: {}".format(SceneManager.activeScenes[replacement[0]], SceneManager.activeScenes[replacement[1]]))
                 SceneManager.removeScene(replacement[1])
 
 
@@ -48,7 +49,7 @@ class SceneManager():
     @staticmethod
     def addScene(scene, layername : str):
         scene.InitScene()
-        print("initiated scene: {}".format(layername))
+        a1Debug.Log("initiated scene: {}".format(layername))
         SceneManager.queueSceneAdd((scene, layername))
         # scene needs to be initiated here because if it isnt then TransitionManager can't use it and transitions fail
 
@@ -64,19 +65,19 @@ class SceneManager():
             scene = SceneManager.addingQueue.get()
             if not SceneManager.activeScenes.__contains__(scene[1]):
                 SceneManager.activeScenes[scene[1]] = scene[0]
-                print("Adding Scene: {}".format(scene[1]))
+                a1Debug.Log("Adding Scene: {}".format(scene[1]))
                     
             else:
-                print("Tried to add scene to existing layername '{}'. Use replaceScene() instead.".format(scene[1]))
+                a1Debug.Log("Tried to add scene to existing layername '{}'. Use replaceScene() instead.".format(scene[1]))
 
     # Scene removal without "dictionary changed size during iteration" errors    
     @staticmethod
     def removeScene(layername):
         if SceneManager.activeScenes.__contains__(layername):
-            print("Queueing Scene for Removal: {}".format(layername))
+            a1Debug.Log("Queueing Scene for Removal: {}".format(layername))
             SceneManager.queueSceneRemoval(layername)
         else:
-            print("Tried to remove scene with nonexisting layername {}".format(layername))
+            a1Debug.Log("Tried to remove scene with nonexisting layername {}".format(layername))
             
     # takes string: layername
     @staticmethod
@@ -95,14 +96,26 @@ class SceneManager():
             layername = SceneManager.removalQueue.get()
             if (SceneManager.activeScenes.__contains__(layername)):
                 SceneManager.activeScenes.pop(layername)
-                print("removed scene: {}".format(layername))
+                a1Debug.Log("removed scene: {}".format(layername))
 
-            
+    
+
+
+
+    @staticmethod
+    def manageClicks():
+        if len(Scene.clicks) != 0:
+            i = len(Scene.clicks)
+            but = Scene.clicks[i-1]
+            but.isDown = True
+            but.onClick.invoke()
+            Scene.clicks = []
+
     # Runs the whole game
     @staticmethod
     async def Run(screen):
         if SceneManager.running:
-            print("Tried to call SceneManager.Run() while already running!!")
+            a1Debug.Log("Tried to call SceneManager.Run() while already running!!")
             return
 
         SceneManager.running = True
@@ -139,6 +152,10 @@ class SceneManager():
                     SceneManager.activeScenes[sceneName].update()
                     SceneManager.activeScenes[sceneName].draw(screen)
             
+            # reset clicking on first layer only
+            #Scene.clicked = False
+            SceneManager.manageClicks()
+
             SceneManager.sceneCleanUp()
 
             # write to screen

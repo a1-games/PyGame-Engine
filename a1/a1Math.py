@@ -10,7 +10,7 @@ def pythag(a, b):
 @staticmethod
 def Normalize(Vector2):
     #if Vector2[0] > -1 and Vector2[0] < 1 or Vector2[1] > -1 and Vector2[1] < 1:
-        #print("WARNING! a1Math.Normalize can't handle values between -1 and 1. Perhaps Multiply by 100 before normalizing?")
+        #a1Debug.Log("WARNING! a1Math.Normalize can't handle values between -1 and 1. Perhaps Multiply by 100 before normalizing?")
 
     x = Vector2[0]
     y = Vector2[1]

@@ -1,3 +1,4 @@
+from a1.a1Debug import a1Debug
 from a1.a1Enums import Alignment
 import pygame
 
@@ -10,7 +11,6 @@ def resource_path(relative_path):
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
-
     return os.path.join(base_path, relative_path)
 
 class TextObject():
@@ -92,9 +92,9 @@ class SpriteTools():
             alpha = 255
         #spriteobject.img.set_alpha(alpha)
         spriteobject.sprite.image.set_alpha(alpha)
-        #print("setting opacity to {}".format(opacity))
+        #a1Debug.Log("setting opacity to {}".format(opacity))
         #spriteobject.sprite.image = spriteobject.img
-        #print(spriterect[1].get_alpha())
+        #a1Debug.Log(spriterect[1].get_alpha())
 
     @staticmethod
     def getSprite(imagename, scene = None):
@@ -125,7 +125,7 @@ class SpriteTools():
             rotsurf = pygame.transform.rotate(surf, rotation)
             textobject.surf = rotsurf
             textobject.rect = rotsurf.get_rect()
-            print("text rot is ", rotation)
+            a1Debug.Log("text rot is ", rotation)
 
         if alignment == Alignment.TopLeft:
             textobject.rect.x = posX

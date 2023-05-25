@@ -1,4 +1,5 @@
 from a1.a1Enums import SceneTransition
+from a1.a1Debug import a1Debug
 from a1.ScreenSize import ScreenSize
 from a1.Scene import Scene
 from a1.a1Time import a1Time
@@ -43,18 +44,18 @@ class TransitionManager():
     def manageTransitionObjects():
         
         while not TransitionManager.transitionAddQueue.empty():
-            #print("transition adding queue is not empty")
+            #a1Debug.Log("transition adding queue is not empty")
             obj = TransitionManager.transitionAddQueue.get()
             TransitionManager.sceneReplacementObjects.append(obj)
             
 
         while not TransitionManager.transitionRemovalQueue.empty():
-            #print("transition removal queue is not empty")
+            #a1Debug.Log("transition removal queue is not empty")
             obj = TransitionManager.transitionRemovalQueue.get()
             TransitionManager.sceneReplacementObjects.remove(obj)
             
             if (len(TransitionManager.sceneReplacementObjects) == 0):
-                print("disabling transitions")
+                a1Debug.Log("disabling transitions")
                 TransitionManager.transitioning = False
 
 
@@ -67,13 +68,18 @@ class TransitionManager():
 
     def _animateTransition(SceneManager):
 
-        #print("--- is animating transition")
+        #a1Debug.Log("--- is animating transition")
 
         TransitionManager.manageTransitionObjects()
 
         for rpo in TransitionManager.sceneReplacementObjects:
             
             if rpo.finished == True:
+                continue
+            
+            if rpo.tmpname not in SceneManager.activeScenes:
+                a1Debug.LogError("ERROR-TRANSITION: Trying to transition with non-existent scene.")
+                TransitionManager._endTransition(rpo, SceneManager)
                 continue
             
             transspeed = a1Time.DeltaTime / TransitionManager._transSpeed * TransitionManager.transDistance
@@ -85,7 +91,7 @@ class TransitionManager():
             toDist = (0, 0)
             fromDist = (0, 0)
 
-            #print("_animateTransition")
+            #a1Debug.Log("_animateTransition")
 
             if rpo.transition == SceneTransition.CrossFade:
                 toOpacity = SceneManager.activeScenes[rpo.tmpname].opacity
@@ -95,7 +101,7 @@ class TransitionManager():
                 SceneManager.activeScenes[rpo.nametoreplace].setOpacity(fromOpacity - fadespeed)
                 # when done:
                 if SceneManager.activeScenes[rpo.tmpname].opacity >= 1:
-                    #print("---opacity transition ended: {}".format(SceneManager.activeScenes[rpo.tmpname].opacity))
+                    #a1Debug.Log("---opacity transition ended: {}".format(SceneManager.activeScenes[rpo.tmpname].opacity))
                     SceneManager.activeScenes[rpo.tmpname].opacity = 1
                     TransitionManager._endTransition(rpo, SceneManager)
                     continue
@@ -138,10 +144,10 @@ class TransitionManager():
 
 
     def _endTransition(rpo : SceneReplacementObject, SceneManager):
-        #print("ending transition")
+        #a1Debug.Log("ending transition")
         rpo.finished = True
 
-        SceneManager.activeScenes[rpo.tmpname].position = (0, 0)
+        SceneManager.activeScenes[rpo.tmpname].setPosition((0, 0))
 
         TransitionManager.queueTransitionObjectRemoval(rpo)
 
@@ -161,7 +167,7 @@ class TransitionManager():
         # transition speed glitch prevention:
         for name in TransitionManager.replacesThisFrame:
             if name == scenenameToReplace:
-                print("Tried to replace the same scene more than once (This was prevented). \nThis could be because you cause a scene change on multiple button presses in the same frame (?)")
+                a1Debug.LogWarning("Tried to replace the same scene more than once (This was prevented). \nThis could be because you cause a scene change on multiple button presses in the same frame (?)")
                 return
         else:
             TransitionManager.replacesThisFrame.append(scenenameToReplace)
@@ -171,7 +177,7 @@ class TransitionManager():
             SceneManager.addScene(rpo.scene, rpo.tmpname)
             SceneManager.queueSceneReplacement(rpo.nametoreplace, rpo.tmpname)
         else: # else, do cool transition
-            print("transition started")
+            #a1Debug.Log("transition started")
                 
             # replacement is queued at the end of the transition
             SceneManager.addScene(rpo.scene, rpo.tmpname)
@@ -179,7 +185,7 @@ class TransitionManager():
             # set invisible
             if rpo.transition == SceneTransition.CrossFade:
                 rpo.scene.setOpacity(0)
-                print("opacity: {}".format(rpo.scene.opacity))
+                #a1Debug.Log("opacity: {}".format(rpo.scene.opacity))
 
             # set position outside the screen
             elif rpo.transition == SceneTransition.Slide_L2R:

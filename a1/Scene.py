@@ -2,10 +2,14 @@ import abc
 import time
 import pygame
 from a1.GameObject import GameObject
+from a1.a1Debug import a1Debug
 from a1.Button import Button
 from a1.MousePos import MousePos
 
 class Scene(metaclass=abc.ABCMeta):
+
+    clicked = False
+    clicks = []
 
     def disable(self):
         self._active = False
@@ -13,7 +17,7 @@ class Scene(metaclass=abc.ABCMeta):
 
     def setPosition(self, pos):
         if self._initiated == False:
-            print("ERROR: Setting scene position before scene was initiated!")
+            a1Debug.Log("ERROR: Setting scene position before scene was initiated!")
             return
         self.position = pos
         for gameobject in self.gameobjects:
@@ -21,7 +25,7 @@ class Scene(metaclass=abc.ABCMeta):
 
     def setOpacity(self, opacity):
         if self._initiated == False:
-            print("ERROR: Setting scene opacity before scene was initiated!")
+            a1Debug.Log("ERROR: Setting scene opacity before scene was initiated!")
             return
         self.opacity = opacity
         for gameobject in self.gameobjects:
@@ -50,18 +54,18 @@ class Scene(metaclass=abc.ABCMeta):
                 del gameobject
 
     def draw(self, screen):
-        #print("is drawing")
+        #a1Debug.Log("is drawing")
         for gameobject in self.gameobjects:
-            #print("is drawing a spriterect in spriterects")
+            #a1Debug.Log("is drawing a spriterect in spriterects")
             if gameobject.active:
                 gameobject.draw(screen, self)
 
     def update(self):
 
-        #print("is drawing")
+        #a1Debug.Log("is drawing")
         if not GameObject._paused:
             for gameobject in self.gameobjects:
-                #print("is drawing a spriterect in spriterects")
+                #a1Debug.Log("is drawing a spriterect in spriterects")
                 if gameobject.active:
                     gameobject.update()
 
@@ -88,9 +92,21 @@ class Scene(metaclass=abc.ABCMeta):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for button in self.buttons:
                         # If we clicked the collider of playButton
-                        if button.active:
+                        if button.active and not Scene.clicked:
                             if button.pointIsColliding(MousePos()):
-                                button.onClick.invoke()
+                                Scene.clicks.append(button)
+                                #button.isDown = True
+                                #Scene.clicked = True
+                                #button.onClick.invoke()
+                # This defines a mouseup listener
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for button in self.buttons:
+                        # If we clicked the collider of playButton
+                        if button.active:
+                            if button.isDown:
+                                button.isDown = False
+                                button.onRelease.invoke()
+        
 
     def InitScene(self):
         self._initiated = True

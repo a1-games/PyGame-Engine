@@ -19,5 +19,3 @@ class a1Event:
         if len(self.actions) == 0:
             return True
         return False
-
-        

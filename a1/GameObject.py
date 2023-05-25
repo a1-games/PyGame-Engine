@@ -3,6 +3,7 @@ from a1.a1Enums import Alignment, SpriteDirection
 from a1.Lerp import Lerp
 from a1.a1Time import a1Time
 from a1.ScreenSize import ScreenSize
+from a1.a1Debug import a1Debug
 import pygame
 import math
 from a1.a1Math import Normalize
@@ -76,10 +77,10 @@ class GameObject():
         self.oldPosition = None
         self.position = startpos
         # scale
-        self.oldScale = None
+        self.oldScale = 1.0
         self.scale = 1.0
         # opacity
-        self.oldOpacity = None
+        self.oldOpacity = 1.0
         self.opacity = 1.0
         # text message
         self.oldText = None
@@ -102,13 +103,12 @@ class GameObject():
 
     def replaceSpriteImg(self, newImg):
         self.spriteobject.replaceImg(newImg)
-        self.oldPosition = None
+        # setting scale causes the image loading to refresh. without it, it wouldn't change until the next time this happens.
         self.oldScale = None
-        self.oldOpacity = None
 
     def setOpacity(self, newopacity):
         self.opacity = newopacity
-        #print("opacity: {} newop: {}".format(self._name, newopacity))
+        #a1Debug.Log("opacity: {} newop: {}".format(self._name, newopacity))
         
     def updateText(self, newMessage : str):
         self.textMessage = newMessage
@@ -122,6 +122,7 @@ class GameObject():
         self.textColor = color
         
     def setPosition(self, pos, lerped : bool = False):
+        # ignore this, it is a leftover from a networked adaptation that i want to get back to
         if (lerped):
             self.lerping = True
             self.frompos = self.position
@@ -132,7 +133,7 @@ class GameObject():
 
     def setScale(self, newscale):
         self.scale = newscale
-        #print("scale: {} newscale: {}".format(self, newscale))
+        #a1Debug.Log("scale: {} newscale: {}".format(self, newscale))
 
     def setRotation(self, degrees):
         self.rotation = degrees
@@ -181,6 +182,8 @@ class GameObject():
 
             if self.oldPosition != self.position or self.oldRotation != self.rotation:
                 SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.alignment, self.scale, self.rotation)
+                if self.opacity != 1:
+                    self.oldOpacity = None
 
             if self.oldOpacity != self.opacity:
                 SpriteTools.setSpriteOpacity(self.spriteobject, self.opacity, scene)

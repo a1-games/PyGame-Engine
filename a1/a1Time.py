@@ -1,4 +1,5 @@
 #import pygame
+from a1.a1Debug import a1Debug
 import time
 
 class a1Time():
@@ -33,7 +34,7 @@ class a1Time():
     def Tick():
         # Time
         a1Time.NowTime = time.time() - a1Time._startTime
-        #print(nowTime)
+        #a1Debug.Log(nowTime)
 
         # deltaTime
         a1Time.DeltaTime = a1Time.NowTime - a1Time._lastFrame
