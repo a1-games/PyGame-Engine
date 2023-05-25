@@ -9,6 +9,7 @@ import gameinfo
 from Scenes.BackgroundScene import BackgroundScene
 from Scenes.MainScene import MainScene
 from Scenes.EmptyScene import EmptyScene
+from Scenes.Settings import Settings
 from Scenes.DebugScene import DebugScene
 from pygame.locals import *
 
@@ -40,6 +41,7 @@ def main():
     SceneManager.addScene(BackgroundScene(), "BackgroundLayer")
     SceneManager.addScene(MainScene(), "MainLayer")
     SceneManager.addScene(EmptyScene(), "UILayer")
+    SceneManager.addScene(Settings(), "PauseLayer")
 
     # Comment this out if you want (If not, keep it on top):
     SceneManager.addScene(DebugScene(), "FPS Counter")

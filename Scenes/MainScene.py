@@ -28,9 +28,9 @@ class MainScene(Scene):
         #self.playButton.addSprite(SpriteTools.getSprite(("img/testbanner.png"), self))
         self.playButton.addText(SpriteTools.getTextRect(("Start Game"), (255, 255, 255)))
         # Change the empty scene to your own scene
-        self.playButton.onClick = lambda : self.changeScene(EmptyScene())
-        self.playButton.onPointerEnter = lambda : self.playButton.setTextColor((255, 255, 0))
-        self.playButton.onPointerExit = lambda : self.playButton.setTextColor((255, 255, 255))
+        self.playButton.onClick.addListener(lambda : self.changeScene(EmptyScene()))
+        self.playButton.onPointerEnter.addListener(lambda : self.playButton.setTextColor((255, 255, 0)))
+        self.playButton.onPointerExit.addListener(lambda : self.playButton.setTextColor((255, 255, 255)))
 
         #self.playButton.showCollider = True
 

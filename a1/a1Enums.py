@@ -6,6 +6,10 @@ class Alignment(enum.Enum):
     TopRight = 2,
     BottomLeft = 3,
     BottomRight = 4,
+    TopMiddle = 5,
+    BottomMiddle = 6
+    LeftMiddle = 7,
+    RightMiddle = 8,
 
     
 class SceneTransition(enum.Enum):

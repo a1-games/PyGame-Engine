@@ -7,7 +7,7 @@ game_title = "Super Awesome Game"
 game_filename = "superawesomegame"
 
 # File path of the game icon displayed in the .exe and in the top left corner of a windowed build.
-game_icon_path = "img/test.png"
+game_icon_path = "img/default/test.png"
 
 # The aspect ratio of the game window. 
 # 1920 by 1080 is UHD fullscreen
