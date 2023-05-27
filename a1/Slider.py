@@ -10,23 +10,21 @@ from a1.SpriteTools import SpriteTools
 class Slider(GameObject):
 
     def __init__(self, startpos, scene, name="slider", alignment=Alignment.Center):
-        super().__init__(startpos, name, alignment)
         # background
-        self.background = GameObject(startpos, "sliderfill", alignment=Alignment.Center)
+        self.background = GameObject(startpos, "sliderfill", spritealignment=Alignment.Center)
         self.background.addSprite(SpriteTools.getSprite("img/slider_background.png"))
         scene.addGameObject(self.background)
 
         # fill
-        self.fill = GameObject(startpos, "sliderfill", alignment=Alignment.BottomLeft)
+        self.fill = GameObject(startpos, "sliderfill", spritealignment=Alignment.BottomLeft)
         self.fill.addSprite(SpriteTools.getSprite("img/slider_fill.png"))
         scene.addGameObject(self.fill)
 
         # values
         self.onValueChanged = a1Event()
         self.dragging = False
-        self.min = self.position[0] - self.background.width() / 2
-        self.max = self.position[0] + self.background.width() / 2
-        self.setValue(1)
+        self.min = startpos[0] - self.background.width() / 2
+        self.max = startpos[0] + self.background.width() / 2
 
         # handle
         handleimg = SpriteTools.getSprite("img/slider_handle.png").img
@@ -40,7 +38,8 @@ class Slider(GameObject):
         self.handle.onPointerEnter.addListener(lambda : self.handle.replaceSpriteImg(handleimg_hover))
         self.handle.onPointerExit.addListener(lambda : self.handle.replaceSpriteImg(handleimg))
 
-        self.setPosition(startpos)
+        super().__init__(startpos, name, alignment)
+        self.setValue(1)
 
  
     def setRotation(self, degrees):
@@ -52,8 +51,8 @@ class Slider(GameObject):
         self.handle.setActive(bool)
         super().setActive(bool)
 
-    def setPosition(self, pos, lerped: bool = False):
-        super().setPosition(pos, lerped)
+    def setPosition(self, pos, unusedbool = False):
+        super().setPosition(pos)
         self.fill.setPosition((pos[0] - self.background.width()/2, pos[1] + self.background.height() / 2))
         self.handle.setPosition((self.max, self.handle.position[1]))
 

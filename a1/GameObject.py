@@ -66,16 +66,18 @@ class GameObject():
         else:
             self.active = True
 
-    def __init__(self, startpos : tuple = (0, 0), name = "noname", alignment = Alignment.Center):
+    def __init__(self, startpos : tuple = (0, 0), name = "noname", spritealignment = Alignment.Center, textalignment : Alignment = None, textIsRelative : bool = False):
         self.name = name
-        self.alignment = alignment
+        self.setAlignment(spritealignment, textalignment)
         self.active = True
+        self.started = False
         
         self.spriteobject = None
         self.textobject = None
         # position
         self.oldPosition = None
-        self.position = startpos
+        self.oldTextPosition = None
+        self.setPosition(startpos, textIsRelative)
         # scale
         self.oldScale = 1.0
         self.scale = 1.0
@@ -93,13 +95,19 @@ class GameObject():
         self.rotation = -1
 
         # debugging
-        self.showCollider = False
+        self.showCollider = True
         self.debugColor = (255, 0, 0)
+
+
+    def start(self, scene):
+        scene.doNextFrame.put(lambda : self.setPosition(self.position, self.textIsRelative))
     
 
     def addSprite(self, spriteobject):
         self.spriteobject = spriteobject
         self.oldScale = -1
+        self.setPosition(self.position, self.textIsRelative)
+        
 
     def replaceSpriteImg(self, newImg):
         self.spriteobject.replaceImg(newImg)
@@ -120,20 +128,69 @@ class GameObject():
 
     def setTextColor(self, color):
         self.textColor = color
-        
-    def setPosition(self, pos, lerped : bool = False):
+
+    def setPosition(self, pos, textIsRelative : bool = False, lerped : bool = False):
+        self.textIsRelative = textIsRelative
+        if not lerped:
+            self.position = pos
+            self.textposition = pos
+            if textIsRelative:
+                self.setRelativeTextPos()
+
         # ignore this, it is a leftover from a networked adaptation that i want to get back to
-        if (lerped):
+        else:
             self.lerping = True
             self.frompos = self.position
             self.targetpos = pos
             self.lerpFloat = 0.0
-        else:
-            self.position = pos
+
+    def setRelativeTextPos(self):
+        if self.spriteobject != None:
+            # this code is correct but it happens before the rect has its position set. find a solution!!!
+            rect = self.spriteobject.sprite.rect
+            if self.textalignment == Alignment.Center:
+                self.textposition = rect.center
+                # we dont use x/y so just get out of here
+                return
+            
+            x = rect.x
+            y = rect.y
+            # get the alignment point of the sprite rect
+            if self.textalignment == Alignment.TopMiddle:
+                x += rect.width/2
+            if self.textalignment == Alignment.TopRight:
+                x += rect.width
+            if self.textalignment == Alignment.RightMiddle:
+                x += rect.width
+                y += rect.height/2
+            if self.textalignment == Alignment.BottomRight:
+                x += rect.width
+                y += rect.height
+            if self.textalignment == Alignment.BottomMiddle:
+                x += rect.width/2
+                y += rect.height
+            if self.textalignment == Alignment.BottomLeft:
+                y += rect.height
+            if self.textalignment == Alignment.LeftMiddle:
+                y += rect.height/2
+            # top left is default
+
+            # set pos
+            self.textposition = (x, y)
+            #a1Debug.LogRainbow(self.name + " " + str((x, y)))
+
+
 
     def setScale(self, newscale):
         self.scale = newscale
         #a1Debug.Log("scale: {} newscale: {}".format(self, newscale))
+
+    def setAlignment(self, spritealign : Alignment, textalign : Alignment = None):
+        self.spritealignment = spritealign
+        if textalign == None:
+            self.textalignment = spritealign
+        else:
+            self.textalignment = textalign
 
     def setRotation(self, degrees):
         self.rotation = degrees
@@ -181,7 +238,7 @@ class GameObject():
                 SpriteTools.setSpriteScale(self.spriteobject, self.scale)
 
             if self.oldPosition != self.position or self.oldRotation != self.rotation:
-                SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.alignment, self.scale, self.rotation)
+                SpriteTools.setSpritePos(self.spriteobject, self.position, scene, self.spritealignment, self.scale, self.rotation)
                 if self.opacity != 1:
                     self.oldOpacity = None
 
@@ -211,8 +268,8 @@ class GameObject():
                 SpriteTools.setTextScale(self.textobject, self.scale)
 
             # set position and/or rotation
-            if self.oldPosition != self.position or self.oldRotation != self.rotation:
-                SpriteTools.setTextPos(self.textobject, self.position, scene, self.alignment, self.scale, self.rotation)
+            if self.oldPosition != self.position or self.oldRotation != self.rotation or self.oldTextPosition != self.textposition:
+                SpriteTools.setTextPos(self.textobject, self.textposition, scene, self.textalignment, self.scale, self.rotation)
             
             # set opacity
             if self.oldOpacity != self.opacity:
@@ -224,6 +281,7 @@ class GameObject():
                 pygame.draw.rect(screen, (self.debugColor[0]*0.5, self.debugColor[1]*0.5, self.debugColor[2]*0.5), self.textobject.rect, 2)
 
         self.oldPosition = self.position
+        self.oldTextPosition = self.textposition
         self.oldRotation = self.rotation
         self.oldScale = self.scale
         self.oldOpacity = self.opacity

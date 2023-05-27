@@ -1,5 +1,6 @@
 import abc
 import time
+import queue
 import pygame
 from a1.GameObject import GameObject
 from a1.a1Debug import a1Debug
@@ -62,17 +63,29 @@ class Scene(metaclass=abc.ABCMeta):
 
     def update(self):
 
-        #a1Debug.Log("is drawing")
+        self.handleDoNextFrame()
+        
         if not GameObject._paused:
             for gameobject in self.gameobjects:
-                #a1Debug.Log("is drawing a spriterect in spriterects")
+                if not gameobject.started:
+                    gameobject.started = True
+                    gameobject.start(self)
+                    
                 if gameobject.active:
                     gameobject.update()
 
         if self._handleEvents:
             self.checkHovering()
 
+
     
+    def handleDoNextFrame(self):
+        while not self.doNextFrame.empty():
+            action = self.doNextFrame.get()
+            action()
+
+    
+
     def checkHovering(self):
         for button in self.buttons:
             if button.active:
@@ -118,3 +131,4 @@ class Scene(metaclass=abc.ABCMeta):
         self.opacity = 1.0
         self.gameobjects = []
         self.buttons = []
+        self.doNextFrame = queue.Queue()

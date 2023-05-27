@@ -7,8 +7,8 @@ from a1.a1Debug import a1Debug
 
 class Button(GameObject):
 
-    def __init__(self, startpos, scene, name="noname", alignment=Alignment.Center):
-        super().__init__(startpos, name, alignment)
+    def __init__(self, startpos, scene, name="noname", spritealignment=Alignment.Center, textalignment=None, textIsRelative : bool = False):
+        super().__init__(startpos, name, spritealignment, textalignment, textIsRelative)
         self.onClick = a1Event()
         self.isDown = False
         self.onRelease = a1Event()
@@ -39,6 +39,7 @@ class Button(GameObject):
                 self.onPointerEnter.invoke()
                 #a1Debug.Log("entered")
                 return
+
 
 
 

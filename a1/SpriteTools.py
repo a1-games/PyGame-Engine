@@ -53,8 +53,8 @@ class SpriteTools():
         
     @staticmethod
     def setSpritePos(spriteobject : SpriteObject, pos, scene, alignment : Alignment, scale : float = 1, rotation : float = -1):
-        w_x = spriteobject.sprite.rect.width
-        w_y = spriteobject.sprite.rect.height
+        #w_x = spriteobject.sprite.rect.width
+        #w_y = spriteobject.sprite.rect.height
 
         posX = scene.position[0] + pos[0]
         posY = scene.position[1] + pos[1]
@@ -67,35 +67,43 @@ class SpriteTools():
             spriteobject.sprite.image = rotsurf
             spriteobject.sprite.rect = rotsurf.get_rect()
             
-        # these are sorte by the order i think that will be used most ( for performance reasons )
+        # these are sorted by the order i think that will be used most ( for performance reasons )
         if alignment == Alignment.Center:
             spriteobject.sprite.rect.center = (posX, posY)
             #spriteobject.sprite.rect.x = posX - w_x / 2
             #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.TopMiddle:
-            spriteobject.sprite.rect.x = posX - w_x / 2
-            spriteobject.sprite.rect.y = posY
+            spriteobject.sprite.rect.midtop = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x / 2
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.LeftMiddle:
-            spriteobject.sprite.rect.x = posX
-            spriteobject.sprite.rect.y = posY - w_y / 2
+            spriteobject.sprite.rect.midleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.RightMiddle:
-            spriteobject.sprite.rect.x = posX - w_x
-            spriteobject.sprite.rect.y = posY - w_y / 2
+            spriteobject.sprite.rect.midright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.BottomMiddle:
-            spriteobject.sprite.rect.x = posX - w_x / 2
-            spriteobject.sprite.rect.y = posY - w_y
+            spriteobject.sprite.rect.midbottom = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x / 2
+            #spriteobject.sprite.rect.y = posY - w_y
         elif alignment == Alignment.BottomLeft:
-            spriteobject.sprite.rect.x = posX
-            spriteobject.sprite.rect.y = posY - w_y
+            spriteobject.sprite.rect.bottomleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY - w_y
         elif alignment == Alignment.TopRight:
-            spriteobject.sprite.rect.x = posX - w_x
-            spriteobject.sprite.rect.y = posY
+            spriteobject.sprite.rect.topright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.TopLeft:
-            spriteobject.sprite.rect.x = posX
-            spriteobject.sprite.rect.y = posY
+            spriteobject.sprite.rect.topleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.BottomRight:
-            spriteobject.sprite.rect.x = posX - w_x
-            spriteobject.sprite.rect.y = posY - w_y
+            spriteobject.sprite.rect.bottomright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY - w_y
         else:
             a1Debug.LogError("Could not find a matching Alignment for sprite {}".format(spriteobject))
 
@@ -127,8 +135,8 @@ class SpriteTools():
 
     @staticmethod
     def setTextPos(textobject : TextObject, pos, scene, alignment : Alignment, scale: float = 1, rotation : float = -1):
-        w_x = textobject.rect.width
-        w_y = textobject.rect.height
+        #w_x = textobject.rect.width
+        #w_y = textobject.rect.height
         
         posX = scene.position[0] + pos[0]
         posY = scene.position[1] + pos[1]
@@ -142,35 +150,43 @@ class SpriteTools():
             textobject.rect = rotsurf.get_rect()
             a1Debug.Log("text rot is ", rotation)
         
-        # these are sorte by the order i think that will be used most ( for performance reasons )
+        # these are sorted by the order i think that will be used most ( for performance reasons )
         if alignment == Alignment.Center:
             textobject.rect.center = (posX, posY)
-            #textobject.rect.x = posX - w_x / 2
-            #textobject.rect.y = posY - w_y / 2
+            #spriteobject.sprite.rect.x = posX - w_x / 2
+            #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.TopMiddle:
-            textobject.rect.x = posX - w_x / 2
-            textobject.rect.y = posY
+            textobject.rect.midtop = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x / 2
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.LeftMiddle:
-            textobject.rect.x = posX
-            textobject.rect.y = posY - w_y / 2
+            textobject.rect.midleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.RightMiddle:
-            textobject.rect.x = posX - w_x
-            textobject.rect.y = posY - w_y / 2
+            textobject.rect.midright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY - w_y / 2
         elif alignment == Alignment.BottomMiddle:
-            textobject.rect.x = posX - w_x / 2
-            textobject.rect.y = posY - w_y
+            textobject.rect.midbottom = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x / 2
+            #spriteobject.sprite.rect.y = posY - w_y
         elif alignment == Alignment.BottomLeft:
-            textobject.rect.x = posX
-            textobject.rect.y = posY - w_y
+            textobject.rect.bottomleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY - w_y
         elif alignment == Alignment.TopRight:
-            textobject.rect.x = posX - w_x
-            textobject.rect.y = posY
+            textobject.rect.topright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.TopLeft:
-            textobject.rect.x = posX
-            textobject.rect.y = posY
+            textobject.rect.topleft = (posX, posY)
+            #spriteobject.sprite.rect.x = posX
+            #spriteobject.sprite.rect.y = posY
         elif alignment == Alignment.BottomRight:
-            textobject.rect.x = posX - w_x
-            textobject.rect.y = posY - w_y
+            textobject.rect.bottomright = (posX, posY)
+            #spriteobject.sprite.rect.x = posX - w_x
+            #spriteobject.sprite.rect.y = posY - w_y
         else:
             a1Debug.LogError("Could not find a matching Alignment for sprite {}".format(textobject))
         
