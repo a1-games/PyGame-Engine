@@ -5,12 +5,13 @@ A starting project for PyGame which includes:
 
 #### • GameObjects
 - [x] Automatic Alignment (You choose the pivot, default is center)
-- [x] Collision W.I.P.
+- [x] Collision Point Check
 
 
 #### • Scene Management
 - [x] Scene Layers
 - [x] Independent, Optionally Animated Scene Transitions
+- [x] DoNextFrame Queue
 
 
 #### • Time
